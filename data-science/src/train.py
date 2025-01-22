@@ -48,7 +48,7 @@ def main(args):
     X_train = train_data[FEATURE_COLS]
 
     # Initialize and train a Decision Tree Classifier
-    model = DecisionTreeClassifier(criterion=args.criterion, max_depth=args.max_depth)
+    model = DecisionTreeClassifier(criterion=args.criterion, max_depth = int(args.max_depth) if args.max_depth != "None" else None)
     model.fit(X_train, y_train)
 
     # Log model hyperparameters
