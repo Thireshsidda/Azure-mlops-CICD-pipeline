@@ -10,6 +10,6 @@ outputs:
     type: mlflow_model
 command: >-
   python train.py 
-  --train_data ${{parent.jobs.prep_data.outputs.train_data}}
-  --model_output ${{parent.outputs.trained_model}}
+  --train_data ${{inputs.train_data}}
+  --model_output ${{outputs.model_output}}
 environment: azureml:pima-train-env@latest
