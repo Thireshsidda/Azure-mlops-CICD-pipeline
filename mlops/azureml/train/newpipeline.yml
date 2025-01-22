@@ -47,7 +47,8 @@ jobs:
       test_data: ${{parent.outputs.test_data}}
 
   sweep_step:
-    type: sweep
+    name: sweep_jon
+    display_name: sweep-job    
     inputs:
       train_data: ${{parent.jobs.prep_data.outputs.train_data}}
     outputs:
