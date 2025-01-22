@@ -85,6 +85,6 @@ jobs:
     environment: azureml:pima-train-env@latest
     inputs:
       model_name: "pima_classification_model"
-      model_path: ${{parent.jobs.sweep_step.outputs.trained_model}}
+      model_path: ${{parent.jobs.sweep_step.outputs.model_output}}
     outputs:
       model_info_output_path: ${{parent.outputs.model_info_output_path}}
