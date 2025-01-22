@@ -63,7 +63,7 @@ jobs:
         values: ["gini", "entropy"]
       max_depth:
         type: choice
-        values: [3, 5, 10, None]
+        values: ["3", "5", "10", "None"]
     objective:
       goal: maximize
       primary_metric: recall_score
