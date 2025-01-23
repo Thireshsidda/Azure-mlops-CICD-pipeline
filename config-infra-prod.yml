@@ -20,7 +20,3 @@ variables:
   # For pipeline reference
   resource_group: default_resourse_group
   aml_workspace: demo_workspace
-  #application_insights: demoworkspace1997734687
-  #key_vault: demoworkspace9715646723
-  #container_registry: a9c528dba4cc4042a824b912e74ef850
-  #storage_account: demoworkspace0813584800
