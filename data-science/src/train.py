@@ -33,8 +33,8 @@ def main(args):
     '''Read train and test datasets, train model, evaluate model, save trained model'''
 
     # Read train and test data from CSV
-    train_df = pd.read_csv(Path(args.train_data))
-    test_df = pd.read_csv(Path(args.test_data))
+    train_df = pd.read_csv(Path(args.train_data)/"train.csv")
+    test_df = pd.read_csv(Path(args.test_data)/"test.csv")
 
     # Split the data into input(X) and output(y)
     y_train = train_df['class']
