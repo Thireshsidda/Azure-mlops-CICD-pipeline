@@ -59,16 +59,6 @@ def main(args):
     print('Recall of Decision Tree classifier on test set: {:.2f}'.format(recall))
     mlflow.log_metric("Recall", float(recall))
 
-    # Visualize results for test data
-    plt.scatter(y_test, yhat_test, color='black')
-    plt.plot(y_test, y_test, color='blue', linewidth=3)
-    plt.xlabel("Actual value")
-    plt.ylabel("Predicted value")
-    plt.title("Test Data")
-
-    plt.savefig("classification_results.png")
-    mlflow.log_artifact("classification_results.png")
-
     # Save the model
     mlflow.sklearn.save_model(sk_model=model, path=args.model_output)
 
