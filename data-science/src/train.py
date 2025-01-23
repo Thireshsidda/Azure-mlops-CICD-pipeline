@@ -64,16 +64,7 @@ def main(args):
     print("Confusion Matrix (Test):")
     print(cm_test)
 
-    # Visualize results
-    plt.figure(figsize=(10, 5))
-    plt.subplot(1, 2, 1)
-    plt.scatter(y_train, yhat_train, color='black')
-    plt.plot(y_train, y_train, color='blue', linewidth=3)
-    plt.xlabel("Actual value")
-    plt.ylabel("Predicted value")
-    plt.title("Training Data")
-    
-    plt.subplot(1, 2, 2)
+    # Visualize results for test data
     plt.scatter(y_test, yhat_test, color='black')
     plt.plot(y_test, y_test, color='blue', linewidth=3)
     plt.xlabel("Actual value")
