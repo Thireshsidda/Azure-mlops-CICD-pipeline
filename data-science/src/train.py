@@ -59,11 +59,6 @@ def main(args):
     print('Recall of Decision Tree classifier on test set: {:.2f}'.format(recall))
     mlflow.log_metric("Recall", float(recall))
 
-    # Create and display a confusion matrix for test data
-    cm_test = confusion_matrix(y_test, yhat_test)
-    print("Confusion Matrix (Test):")
-    print(cm_test)
-
     # Visualize results for test data
     plt.scatter(y_test, yhat_test, color='black')
     plt.plot(y_test, y_test, color='blue', linewidth=3)
