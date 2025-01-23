@@ -6,21 +6,12 @@ Trains ML model using training dataset. Saves trained model.
 
 import argparse
 from pathlib import Path
-import numpy as np
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import recall_score, confusion_matrix
 import mlflow
 import mlflow.sklearn
 from matplotlib import pyplot as plt
-
-# Define target column
-TARGET_COL = "class"
-
-# Define feature columns
-FEATURE_COLS = [
-    "preg", "plas", "pres", "skin", "test", "mass", "pedi", "age"
-]
 
 def parse_args():
     '''Parse input arguments'''
@@ -40,15 +31,15 @@ def parse_args():
 def main(args):
     '''Read train dataset, train model, save trained model'''
 
-    # Read train data
-    train_data = pd.read_parquet(Path(args.train_data))
+    # Read train data from CSV
+    train_data = pd.read_csv(Path(args.train_data))
 
     # Split the data into input(X) and output(y)
-    y_train = train_data[TARGET_COL]
-    X_train = train_data[FEATURE_COLS]
+    y_train = train_data['class']
+    X_train = train_data.drop(columns=['class'])
 
     # Initialize and train a Decision Tree Classifier
-    model = DecisionTreeClassifier(criterion=args.criterion, max_depth = int(args.max_depth) if args.max_depth != "None" else None)
+    model = DecisionTreeClassifier(criterion=args.criterion, max_depth=args.max_depth)
     model.fit(X_train, y_train)
 
     # Log model hyperparameters
