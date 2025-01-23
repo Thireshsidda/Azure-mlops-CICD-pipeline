@@ -29,6 +29,7 @@ def main(args):
 
     # Reading Data
     df = pd.read_csv(args.raw_data)
+    print(df)
 
     # Split Data into train and test datasets
     train_df, test_df = train_test_split(df, test_size=args.test_train_ratio, random_state=42)
