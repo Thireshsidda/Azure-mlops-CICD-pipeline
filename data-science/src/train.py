@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 """
-Trains ML model using training dataset. Saves trained model.
+Trains ML model using training dataset and evaluates using test dataset. Saves trained model.
 """
 
 import argparse
@@ -18,6 +18,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser("train")
     parser.add_argument("--train_data", type=str, help="Path to train dataset")
+    parser.add_argument("--test_data", type=str, help="Path to test dataset")
     parser.add_argument("--model_output", type=str, help="Path of output model")
     parser.add_argument('--criterion', type=str, default='gini',
                         help='The function to measure the quality of a split')
@@ -29,14 +30,17 @@ def parse_args():
     return args
 
 def main(args):
-    '''Read train dataset, train model, save trained model'''
+    '''Read train and test datasets, train model, evaluate model, save trained model'''
 
-    # Read train data from CSV
-    train_data = pd.read_csv(Path(args.train_data))
+    # Read train and test data from CSV
+    train_df = pd.read_csv(Path(args.train_data))
+    test_df = pd.read_csv(Path(args.test_data))
 
     # Split the data into input(X) and output(y)
-    y_train = train_data['class']
-    X_train = train_data.drop(columns=['class'])
+    y_train = train_df['class']
+    X_train = train_df.drop(columns=['class'])
+    y_test = test_df['class']
+    X_test = test_df.drop(columns=['class'])
 
     # Initialize and train a Decision Tree Classifier
     model = DecisionTreeClassifier(criterion=args.criterion, max_depth=args.max_depth)
@@ -47,26 +51,38 @@ def main(args):
     mlflow.log_param("criterion", args.criterion)
     mlflow.log_param("max_depth", args.max_depth)
 
-    # Predict using the Decision Tree Model
-    yhat_train = model.predict(X_train)
+    # Predict using the Decision Tree Model on test data
+    yhat_test = model.predict(X_test)
 
-    # Compute and log recall score
-    recall = recall_score(y_train, yhat_train)
-    print('Recall of Decision Tree classifier on training set: {:.2f}'.format(recall))
+    # Compute and log recall score for test data
+    recall = recall_score(y_test, yhat_test)
+    print('Recall of Decision Tree classifier on test set: {:.2f}'.format(recall))
     mlflow.log_metric("Recall", float(recall))
 
-    # Create and display a confusion matrix
-    cm = confusion_matrix(y_train, yhat_train)
-    print(cm)
+    # Create and display a confusion matrix for test data
+    cm_test = confusion_matrix(y_test, yhat_test)
+    print("Confusion Matrix (Test):")
+    print(cm_test)
 
     # Visualize results
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
     plt.scatter(y_train, yhat_train, color='black')
     plt.plot(y_train, y_train, color='blue', linewidth=3)
     plt.xlabel("Actual value")
     plt.ylabel("Predicted value")
+    plt.title("Training Data")
+    
+    plt.subplot(1, 2, 2)
+    plt.scatter(y_test, yhat_test, color='black')
+    plt.plot(y_test, y_test, color='blue', linewidth=3)
+    plt.xlabel("Actual value")
+    plt.ylabel("Predicted value")
+    plt.title("Test Data")
+
     plt.savefig("classification_results.png")
     mlflow.log_artifact("classification_results.png")
-    
+
     # Save the model
     mlflow.sklearn.save_model(sk_model=model, path=args.model_output)
 
@@ -79,6 +95,7 @@ if __name__ == "__main__":
 
     lines = [
         f"Train dataset input path: {args.train_data}",
+        f"Test dataset input path: {args.test_data}",
         f"Model output path: {args.model_output}",
         f"Criterion: {args.criterion}",
         f"Max Depth: {args.max_depth}"
