@@ -5,6 +5,8 @@ display_name: train_model
 inputs: 
   train_data:
     type: uri_folder
+  test_data:
+    type: uri_folder
   criterion:
     type: string
     default: gini
@@ -18,6 +20,7 @@ code: ../../../data-science/src
 command: >-
   python train.py 
   --train_data ${{inputs.train_data}}
+  --test_data ${{inputs.test_data}}
   --criterion ${{inputs.criterion}}
   --max_depth ${{inputs.max_depth}}
   --model_output ${{outputs.model_output}}
