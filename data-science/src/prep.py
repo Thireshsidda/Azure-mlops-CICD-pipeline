@@ -4,7 +4,6 @@
 Prepares raw data and provides training and test datasets.
 """
 
-import numpy
 import argparse
 from pathlib import Path
 import os
@@ -28,10 +27,7 @@ def main(args):
     '''Read, split, and save datasets'''
 
     # Reading Data
-    df = pd.read_csv(args.raw_data)
-    print(df)
-    print(df.shape)
-    
+    df = pd.read_csv(args.raw_data)    
 
     # Split Data into train and test datasets
     train_df, test_df = train_test_split(df, test_size=args.test_train_ratio, random_state=42)
