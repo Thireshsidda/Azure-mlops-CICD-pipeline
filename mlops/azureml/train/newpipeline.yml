@@ -12,7 +12,6 @@ inputs:
 outputs:
   train_data:
   test_data:
-  trained_model:
   model_info_output_path:
 
 settings:
