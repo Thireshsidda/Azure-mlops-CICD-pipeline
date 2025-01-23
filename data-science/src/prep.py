@@ -4,6 +4,7 @@
 Prepares raw data and provides training and test datasets.
 """
 
+import numpy
 import argparse
 from pathlib import Path
 import os
